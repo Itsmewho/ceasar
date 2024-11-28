@@ -27,7 +27,7 @@ def input_typing_effect(prompt, delay=0.035):
     return user_input
 
 
-def pauze_clear(delay=0.35, message=None, typing_delay=0.075):
+def pauze_clear(delay=0.35, message=None):
 
     time.sleep(delay)
     clear()
