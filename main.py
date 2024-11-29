@@ -1,6 +1,9 @@
-from utils.helpers import *
 from colorama import Fore, Style
+
+from utils.helpers import *
 from utils.auth import register, login
+from utils.invite_sys import manage_invites
+from utils.login_menu import menu_after_login
 
 
 def main():
@@ -10,25 +13,36 @@ def main():
     )
 
     while True:
+
         clear()
+
         action = input_typing_effect(
             "Do you want to login or register? (login/register): "
         ).lower()
         clear()
+
         if action in ["register", "r", "reg"]:
             # Clarification Run register:
             register()
+            continue
 
         elif action in ["login", "log", "l"]:
             logged_user = login()
             if logged_user:
-                typing_effect(Fore.GREEN + f"Welcome back, {logged_user["name"]}")
+                typing_effect(
+                    Fore.BLUE + f"Welcome back, {logged_user["name"]}{Style.RESET_ALL}"
+                )
+                pauze_clear()
+                menu_after_login(logged_user)
+
+        elif action in ["n", "q", "quit"]:
+            handle_quit()  # Gracefully exit the program
+            break  # Exit out of the main loop
         else:
             typing_effect(
-                Fore.RED
-                + "Invalid choice. Please choose 'login' or 'register'."
-                + Style.RESET_ALL
+                Fore.RED + "Invalid choice, please type 'login' or 'register'."
             )
+            continue
 
 
 if __name__ == "__main__":

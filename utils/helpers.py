@@ -5,7 +5,7 @@ import bcrypt
 import msvcrt
 import getpass
 from colorama import Fore, Style
-from db.db_operations import read_db
+from db.db_operations import read_db, create_db, update_db
 from pydantic import BaseModel, ValidationError
 
 # General use:
@@ -175,3 +175,38 @@ def check_user_login(name, surname, phone, password):
 
     except Exception as e:
         return False, f"Error checking user: {e}"
+
+
+# Invite functions:
+
+
+def view_invites(recipient_phone):
+    invites = read_db("invitations", {"recipient.phone": recipient_phone})
+    return invites
+
+
+def add_contact(user_phone, contact):
+
+    contact_data = {
+        "name": contact["name"],
+        "surname": contact["surname"],
+        "phone": contact["phone"],
+    }
+    update_db(
+        "contact_list",
+        {"user_phone": user_phone},
+        {"$addToSet": {"contacts": contact_data}},
+    )
+
+
+def notify_unread_invites(recipient_phone):
+
+    invites = read_db(
+        "invitations", {"recipient.phone": recipient_phone, "status": "unread"}
+    )
+    if invites:
+        typing_effect(f"You have {len(invites)} unread invites!")
+        return invites
+    else:
+        typing_effect("You have no unread invites.")
+        return []
