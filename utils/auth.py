@@ -92,3 +92,38 @@ def register():
 
     except ValueError as e:
         typing_effect(f"Error: {e}")
+
+
+def login():
+    while True:
+        name = input_typing_effect("Enter your first name: ").title()
+        surname = input_typing_effect("Enter your surname: ").title()
+        phone = get_valid_input_validation(
+            "Enter your phone number: ", "phone", min_length=10
+        )
+        if not phone.isdigit():
+            typing_effect(
+                Fore.RED
+                + "Invalid phone number. Please enter a valid phone number."
+                + Style.RESET_ALL
+            )
+            continue
+        password = input_with_masking("Enter your password: ")
+
+        valid, user_or_message = check_user_login(name, surname, phone, password)
+
+        if valid:
+            typing_effect(Fore.GREEN + "Login successful!" + Style.RESET_ALL)
+            return user_or_message
+        else:
+            typing_effect(
+                Fore.RED
+                + "Incorrect username, phone number, or password."
+                + Style.RESET_ALL
+            )
+
+        retry = input_typing_effect("Do you want to try again? (y/n): ").lower()
+        clear()
+        if retry in ["n", "q", "quit"]:
+            handle_quit()
+            break

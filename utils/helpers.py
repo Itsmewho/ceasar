@@ -94,6 +94,12 @@ def encrypt_password(password):
     return bcrypt.hashpw(password.encode("utf-8"), salt)
 
 
+def check_password(stored_password, entered_password):
+    return bcrypt.checkpw(
+        entered_password.encode("utf-8"), stored_password.encode("utf-8")
+    )
+
+
 # Register functions:
 
 
@@ -109,7 +115,7 @@ def check_user_exists(name, surname, phone, email):
 
 
 def validate_field(field_name, value):
-    """Validate an individual field with Pydantic and regex."""
+
     email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
 
     if field_name == "email":
@@ -129,7 +135,7 @@ def validate_field(field_name, value):
 
 
 def get_valid_input_validation(prompt, field_type, min_length=None):
-    """Consolidates the logic of getting and validating user input."""
+
     while True:
         user_input = input_typing_effect(prompt).title()
 
@@ -146,3 +152,26 @@ def get_valid_input_validation(prompt, field_type, min_length=None):
         if validation is True:
             return user_input
         typing_effect(Fore.RED + f"Invalid {field_type}: {validation}{Style.RESET_ALL}")
+
+
+# Login functions:
+
+
+def check_user_login(name, surname, phone, password):
+
+    try:
+        # Query the database for the user
+        user = read_db("users", {"name": name, "surname": surname, "phone": phone})
+
+        if user:
+            user = user[0]
+            stored_password = user["password"]
+
+            # Validate password
+            if check_password(stored_password, password):
+                return True, user
+            return False, "Incorrect password."
+        return False, "User not found."
+
+    except Exception as e:
+        return False, f"Error checking user: {e}"

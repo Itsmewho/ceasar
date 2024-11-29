@@ -26,7 +26,7 @@ def create_db(collection_name, data):
 
     try:
         db[collection_name].insert_one(data)
-        print(Fore.GREEN + f"Document inserted into {collection_name}{Style.RESET_ALL}")
+        # print(Fore.GREEN + f"Document inserted into {collection_name}{Style.RESET_ALL}") --> It works only for debugging
     except Exception as e:
         print(Fore.RED + f"Error inserting document: {e}{Style.RESET_ALL}")
 
