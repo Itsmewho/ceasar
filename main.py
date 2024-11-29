@@ -14,7 +14,11 @@ def main():
     phone = get_valid_input("Enter your phone number: ", "phone")
 
     if check_user_exists(name, surname, phone):
-        typing_effect(Fore.RED + "User already exists!" + Style.RESET_ALL)
+        typing_effect(
+            Fore.RED
+            + "A user with the name '{name} {surname}' and phone '{phone}' already exists!"
+            + Style.RESET_ALL
+        )
         if input_typing_effect("Do you want to retry? (y/n): ").lower() != "y":
             handle_quit()
             return
@@ -22,10 +26,10 @@ def main():
     # Password validation :
 
     while True:
-        password = get_valid_input(
-            "Enter your password (min length is 8): ", "password"
+        password = input_with_masking(
+            Fore.GREEN + f"Enter your password (min length is 8): ", "password"
         )
-        confirm_pass = input_typing_effect("Confirm password: ")
+        confirm_pass = input_with_masking("Confirm password: ")
         if password != confirm_pass:
             typing_effect(
                 Fore.RED
@@ -43,7 +47,7 @@ def main():
         user_data_dict = user_data.model_dump()
         user_data_dict["password"] = encrypted_password.decode("utf-8")
         create_db("users", user_data_dict)
-        typing_effect("User registered successfully!")
+        typing_effect(Fore.BLUE + f"User registered successfully! 👌 {Style.RESET_ALL}")
 
     except ValueError as e:
         typing_effect(f"Error: {e}")

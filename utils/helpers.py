@@ -32,6 +32,22 @@ def input_typing_effect(prompt, delay=0.02):
     return user_input
 
 
+def input_with_masking(prompt, delay=0.02):
+    for char in prompt:
+        print(char, end="", flush=True)
+        time.sleep(delay)
+
+    user_input = input().strip().lower()
+
+    if user_input in ["n", "q", "quit"]:
+        handle_quit()
+
+    masked_input = "*" * len(user_input)
+    print(f"\nYour input: {masked_input}")
+
+    return user_input
+
+
 def get_valid_input(prompt, field_name):
     while True:
         user_input = input_typing_effect(prompt)
