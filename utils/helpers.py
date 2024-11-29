@@ -1,8 +1,10 @@
 import os
+import re
 import time
 import bcrypt
+import msvcrt
+import getpass
 from colorama import Fore, Style
-from models.users import UserModel
 from db.db_operations import read_db
 from pydantic import BaseModel, ValidationError
 
@@ -27,35 +29,38 @@ def input_typing_effect(prompt, delay=0.02):
         time.sleep(delay)
     user_input = input().strip().lower()
 
-    if user_input == ["n", "q", "quit"]:
+    if user_input in ["n", "q", "quit"]:
         handle_quit()
     return user_input
 
 
 def input_with_masking(prompt, delay=0.02):
+    # Display the prompt with typing effect
     for char in prompt:
         print(char, end="", flush=True)
-        time.sleep(delay)
+        time.sleep(delay)  # Delay for typing effect
 
-    user_input = input().strip().lower()
+    if os.name == "nt":  # Windows
+        user_input = ""
+        while True:
+            char = msvcrt.getch()  # Get a single character from the user
+            if char == b"\r":  # Enter key pressed
+                break
+            elif char == b"\x08":  # Backspace key pressed
+                user_input = user_input[:-1]
+                print("\b \b", end="", flush=True)  # Remove the last character
+            else:
+                user_input += char.decode("utf-8")
+                print("*", end="", flush=True)  # Print * to mask input
+        print()  # Newline after input
 
-    if user_input in ["n", "q", "quit"]:
-        handle_quit()
-
-    masked_input = "*" * len(user_input)
-    print(f"\nYour input: {masked_input}")
+    else:  # Linux/macOS (Unix-based systems)
+        user_input = getpass.getpass(
+            prompt
+        )  # Use getpass for Unix-based systems (masks input)
+        print()  # Newline after input
 
     return user_input
-
-
-def get_valid_input(prompt, field_name):
-    while True:
-        user_input = input_typing_effect(prompt)
-        validation = validate_field(field_name, user_input)
-        if validation is True:
-            return user_input
-        # Can't find a better way for this,.. :
-        typing_effect(Fore.RED + f"Invalid {field_name}: {validation}{Style.RESET_ALL}")
 
 
 def pauze_clear(delay=0.35, message=None):
@@ -69,12 +74,12 @@ def pauze_clear(delay=0.35, message=None):
 
 
 def handle_quit():
-    typing_effect("Goodbye, Till next time!")
+    typing_effect(Fore.BLUE + f"Goodbye, Till next time! {Style.RESET_ALL}")
     pauze_clear(message=None)
     exit()
 
 
-# Encrypt and Decription functions:
+# Encrypt and Decryption functions:
 
 
 def encrypt_password(password):
@@ -85,13 +90,22 @@ def encrypt_password(password):
 # Register functions:
 
 
-def check_user_exists(name, surname, phone):
-    existing_user = read_db("users", {"name": name, "surname": surname, "phone": phone})
+def check_user_exists(name, surname, phone, email):
+    existing_user = read_db(
+        "users", {"name": name, "surname": surname, "phone": phone, "email": email}
+    )
     return len(existing_user) > 0
 
 
 def validate_field(field_name, value):
-    # pydantic model:
+    """Validate an individual field with Pydantic and regex."""
+    email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+
+    if field_name == "email":
+        # Manually validate the email using regex
+        if not re.match(email_regex, value):
+            return "Invalid email format"
+
     class TempModel(BaseModel):
         __annotations__ = {field_name: str}
 
@@ -103,4 +117,21 @@ def validate_field(field_name, value):
         return e.errors()[0]["msg"]
 
 
-# Login functions:
+def get_valid_input_validation(prompt, field_type, min_length=None):
+    """Consolidates the logic of getting and validating user input."""
+    while True:
+        user_input = input_typing_effect(prompt).title()
+
+        # If we have a min_length requirement (e.g., for password or phone), validate it
+        if min_length and len(user_input) < min_length:
+            typing_effect(
+                Fore.RED
+                + f"{field_type.capitalize()} must be at least {min_length} characters long. Please try again."
+                + Style.RESET_ALL
+            )
+            continue
+
+        validation = validate_field(field_type, user_input)
+        if validation is True:
+            return user_input
+        typing_effect(Fore.RED + f"Invalid {field_type}: {validation}{Style.RESET_ALL}")
