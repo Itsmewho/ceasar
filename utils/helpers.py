@@ -35,10 +35,15 @@ def input_typing_effect(prompt, delay=0.02):
 
 
 def input_with_masking(prompt, delay=0.02):
-    # Display the prompt with typing effect
+
+    try:
+        delay = float(delay)
+    except ValueError:
+        delay = 0.02
+
     for char in prompt:
         print(char, end="", flush=True)
-        time.sleep(delay)  # Delay for typing effect
+        time.sleep(delay)
 
     if os.name == "nt":  # Windows
         user_input = ""
@@ -84,6 +89,8 @@ def handle_quit():
 
 def encrypt_password(password):
     salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), salt)
+
     return bcrypt.hashpw(password.encode("utf-8"), salt)
 
 
@@ -91,6 +98,10 @@ def encrypt_password(password):
 
 
 def check_user_exists(name, surname, phone, email):
+
+    email = email.lower()
+    phone = phone.strip()
+
     existing_user = read_db(
         "users", {"name": name, "surname": surname, "phone": phone, "email": email}
     )

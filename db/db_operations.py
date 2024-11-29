@@ -39,6 +39,7 @@ def read_db(collection_name, query=None):
         return list(db[collection_name].find(query))
     except Exception as e:
         print(Fore.RED + f"Error reading data : {e}{Style.RESET_ALL}")
+        return []
 
 
 def update_db(collection_name, query, update_data):

@@ -8,9 +8,15 @@ def register():
 
     while True:
         # Validate name, surname, email, and phone
-        name = get_valid_input_validation("Enter your first name: ", "name")
-        surname = get_valid_input_validation("Enter your surname: ", "surname")
-        email = get_valid_input_validation("Enter your email: ", "email")
+        name = get_valid_input_validation(
+            Fore.GREEN + f"Enter your first name: ", "name"
+        ).title()
+        surname = get_valid_input_validation(
+            Fore.GREEN + f"Enter your surname: ", "surname"
+        ).title()
+        email = get_valid_input_validation(
+            Fore.GREEN + f"Enter your email: ", "email"
+        ).lower()
 
         validation = validate_field("email", email)
         if validation is not True:
@@ -18,7 +24,7 @@ def register():
             continue
 
         phone = get_valid_input_validation(
-            "Enter your phone number: ", "phone", min_length=10
+            Fore.GREEN + f"Enter your phone number: ", "phone", min_length=10
         )
         if not phone.isdigit():
             typing_effect(
@@ -32,7 +38,7 @@ def register():
         if check_user_exists(name, surname, phone, email):
             typing_effect(
                 Fore.RED
-                + f"A user with the name '{name} {surname}' and phone number '{phone}' already exists!"
+                + f"A user with the name '{name} {surname}' email: {email} and phone number '{phone}' already exists!"
                 + Style.RESET_ALL
             )
             response = input_typing_effect("Do you want to retry? (y/n): ").lower()
