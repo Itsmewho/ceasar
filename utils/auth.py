@@ -1,6 +1,6 @@
 from utils.helpers import *
-from colorama import Fore, Style
-from utils.auth import register, login
+from models.users import UserModel
+from db.db_operations import create_db
 
 
 def register():
@@ -92,15 +92,3 @@ def register():
 
     except ValueError as e:
         typing_effect(f"Error: {e}")
-
-
-def main():
-    typing_effect(Fore.GREEN + f"Welcome to Caesar Cipher Messages!")
-
-    while True:
-        register()
-        input_typing_effect("Do you want to register another user? (y/n): ").lower()
-
-
-if __name__ == "__main__":
-    main()
