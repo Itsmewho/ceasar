@@ -5,8 +5,8 @@ class UserModel(BaseModel):
     name: str = Field(..., min_length=3)
     surname: str = Field(..., min_length=3)
     email: EmailStr
-    phone: str = Field(..., regex=r"^\d{10,15}$")
+    phone: str = Field(..., pattern=r"^[0-9]{10}$")
     password: str = Field(..., min_length=8)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
