@@ -45,8 +45,8 @@ def read_db(collection_name, query=None):
 def update_db(collection_name, query, update_data):
 
     try:
-        result = db[collection_name].update_one(query, {"$set": update_data})
-        if result.modifeid_count > 0:
+        result = db[collection_name].update_one(query, update_data)
+        if result.modified_count > 0:
             print(
                 Fore.GREEN
                 + f"Document is updated in {collection_name}{Style.RESET_ALL}"

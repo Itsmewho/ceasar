@@ -21,10 +21,12 @@ def menu_after_login(logged_user):
 
         if action == "1":
             # Manage unread invites
+            clear()
             manage_invites(logged_user_phone)
 
         elif action == "2":
             # Send a new invite
+            pauze_clear()
             recipient_phone = input_typing_effect("Enter recipient's phone number: ")
             recipient_name = input_typing_effect("Enter recipient's name: ").title()
             recipient_surname = input_typing_effect(
@@ -46,6 +48,7 @@ def menu_after_login(logged_user):
         elif action == "3":
             # Log out
             typing_effect(Fore.GREEN + "Logging out...")
+            pauze_clear()
             return  # Go back to login
 
         elif action == "4":

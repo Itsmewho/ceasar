@@ -1,12 +1,15 @@
 import os
 import re
 import time
+import uuid
 import bcrypt
 import msvcrt
 import getpass
+import secrets
 from colorama import Fore, Style
-from db.db_operations import read_db, create_db, update_db
+from db.db_operations import read_db
 from pydantic import BaseModel, ValidationError
+
 
 # General use:
 
@@ -100,6 +103,12 @@ def check_password(stored_password, entered_password):
     )
 
 
+def generate_secure_id():
+    random_uuid = uuid.uuid4().hex
+    random_secrets = secrets.token_hex(8)
+    return f"{random_uuid}-{random_secrets}"
+
+
 # Register functions:
 
 
@@ -183,20 +192,6 @@ def check_user_login(name, surname, phone, password):
 def view_invites(recipient_phone):
     invites = read_db("invitations", {"recipient.phone": recipient_phone})
     return invites
-
-
-def add_contact(user_phone, contact):
-
-    contact_data = {
-        "name": contact["name"],
-        "surname": contact["surname"],
-        "phone": contact["phone"],
-    }
-    update_db(
-        "contact_list",
-        {"user_phone": user_phone},
-        {"$addToSet": {"contacts": contact_data}},
-    )
 
 
 def notify_unread_invites(recipient_phone):

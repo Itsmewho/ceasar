@@ -23,12 +23,14 @@ def main():
 
         if action in ["register", "r", "reg"]:
             # Clarification Run register:
+            clear()
             register()
             continue
 
         elif action in ["login", "log", "l"]:
             logged_user = login()
             if logged_user:
+                clear()
                 typing_effect(
                     Fore.BLUE + f"Welcome back, {logged_user["name"]}{Style.RESET_ALL}"
                 )
