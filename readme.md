@@ -1,4 +1,4 @@
-Add on as more options are done.
+Add on has more features are done.
 
 #
 
