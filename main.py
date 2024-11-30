@@ -2,7 +2,7 @@ from colorama import Fore, Style
 
 from utils.helpers import *
 from utils.auth import register, login
-from utils.invite_sys import manage_invites
+from utils.invite import manage_invites
 from utils.login_menu import menu_after_login
 
 

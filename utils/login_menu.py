@@ -1,5 +1,5 @@
 from colorama import Style, Fore
-from utils.invite_sys import manage_invites, send_invite
+from utils.invite import manage_invites, send_invite
 from utils.helpers import (
     input_typing_effect,
     typing_effect,
