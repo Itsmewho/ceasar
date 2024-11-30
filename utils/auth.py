@@ -34,7 +34,8 @@ def register():
             continue
 
         # Check if the user already exists in the database
-        if check_user_exists(name, surname, phone, email):
+        if check_user_exists(phone):
+
             typing_effect(
                 Fore.RED
                 + f"A user with the name '{name} {surname}' email: {email} and phone number '{phone}' already exists!"

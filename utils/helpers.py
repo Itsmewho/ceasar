@@ -109,17 +109,36 @@ def generate_secure_id():
     return f"{random_uuid}-{random_secrets}"
 
 
+def caesar_encrypt(message, shift):
+    encrypted = []
+    for char in message:
+        if char.isalpha():
+            shift_base = ord("A") if char.isupper() else ord("a")
+            encrypted.append(chr((ord(char) - shift_base + shift) % 26 + shift_base))
+        else:
+            encrypted.append(char)
+    return "".join(encrypted)
+
+
+def caesar_decrypt(encrypted_message, shift):
+    decrypted = []
+    for char in encrypted_message:
+        if char.isalpha():
+            shift_base = ord("A") if char.isupper() else ord("a")
+            decrypted.append(chr((ord(char) - shift_base - shift) % 26 + shift_base))
+        else:
+            decrypted.append(char)
+    return "".join(decrypted)
+
+
 # Register functions:
 
 
-def check_user_exists(name, surname, phone, email):
+def check_user_exists(phone):
 
-    email = email.lower()
     phone = phone.strip()
 
-    existing_user = read_db(
-        "users", {"name": name, "surname": surname, "phone": phone, "email": email}
-    )
+    existing_user = read_db("users", {"phone": phone})
     return len(existing_user) > 0
 
 

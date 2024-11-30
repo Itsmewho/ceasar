@@ -1,4 +1,6 @@
 from colorama import Style, Fore
+from utils.delete import delete_user
+from utils.messages import send_message, read_messages
 from utils.invite import manage_invites, send_invite
 from utils.helpers import (
     input_typing_effect,
@@ -16,8 +18,16 @@ def menu_after_login(logged_user):
 
     while True:
         action = input_typing_effect(
-            "What do you want to do?\n1: manage invites\n2: send invite\n3: logout\n4: exit\nEnter choice: ",
-        ).lower()
+            Style.RESET_ALL + f"What do you want to do? \n"
+            "(1) Manage invites\n"
+            "(2) Send invites\n"
+            "(3) Send message\n"
+            "(4) Read messages\n"
+            "(5) Delete account\n"
+            "(6) Logout\n"
+            "(7) Exit program\n"
+            "Enter your choice: "
+        ).strip()
 
         if action == "1":
             # Manage unread invites
@@ -34,7 +44,7 @@ def menu_after_login(logged_user):
             ).title()
             message = input_typing_effect("Enter the invite message: ")
 
-            result, message = send_invite(
+            _, message = send_invite(
                 logged_user["name"],
                 logged_user["surname"],
                 logged_user_phone,
@@ -46,13 +56,47 @@ def menu_after_login(logged_user):
             typing_effect(message)
 
         elif action == "3":
-            # Log out
-            typing_effect(Fore.GREEN + "Logging out...")
+            # Send a message
             pauze_clear()
-            return  # Go back to login
+            recipient_phone = input_typing_effect(
+                "Enter the recipient's phone number: "
+            )
+            message = input_typing_effect("Enter your message: ")
+            result, feedback = send_message(logged_user, recipient_phone, message)
+            typing_effect(feedback)
 
         elif action == "4":
-            # Exit program
+            clear()
+            messages, feedback = read_messages(logged_user["phone"])
+            if messages:
+                for msg in messages:
+                    print(
+                        f"From: {msg['sender_name']} - Message: {msg['encrypted_message']}"
+                    )
+            else:
+                print(feedback)
+
+        elif action == "5":
+            # Delete the account
+            confirm_delete = (
+                input_typing_effect(
+                    "Are you sure you want to delete your account? (y/n): "
+                )
+                .strip()
+                .lower()
+            )
+            if confirm_delete == "y":
+                delete_user(logged_user_phone)
+                break  # Exit the menu after account deletion
+            else:
+                typing_effect("Account deletion cancelled.")
+                continue
+
+        elif action == "6":
+            typing_effect(Fore.GREEN + "Logging out...")
+            break  # Go back to login
+
+        elif action == "7":
             handle_quit()
 
         else:

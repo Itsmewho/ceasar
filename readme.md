@@ -12,25 +12,9 @@ Add on as more options are done.
 - Delete invite after contact is added. (done)
 - Check if user already in contact list (message invite already send to {user}) (done)
 - go back to menu (done)
-- Make a contactlist with each party(pair) a unique secure ID (done sort offfff)
-- Secure messaging (ceasar_cipher) -
-
-- Deleting messages (everywhere) -
-- Deleting users from contact list
-- Delete account. (And all corresponding data to the account in db-collections) -
-
-#
-
-NOTE:
-
-#
-
-- First: I thought that I knew what I was doing.
-- Second: Chatgpt knew what it was doing.
-- thirt: GPT and I knew what was going on.
-- fourth: GPT lost it, I figured out what needed to be done,
-
-Now only god knows,... XD
+- Make a contactlist with a unique secure ID (done sort offfff)
+- Secure messaging (ceasar_cipher) - (Done)
+- Delete account. (And all corresponding data to the account in db-collections) done
 
 #
 
@@ -42,11 +26,13 @@ LEARNING POITNS :
 - Work on functions
 - Get better with dicts,.
 - Use of folder system
-- Try to refine coding style,. . . .... . . .. . . . .......
+- Refine coding style,. . . .... . . .. . . . .......
+- Refine boiler plate?
 - CRUD-operations
+- Hide DB-collections next time. MONGO_DBUSERS, MONGO_DBCONTACTS etc,...
 
 #
 
-Do an additional '3', of these size projects,..
+Do an additional 3 or 4 of these kind of projects,..
 
     Before adding API's and data collection.

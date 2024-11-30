@@ -10,14 +10,6 @@ MONGO_URI = os.getenv("MONGO_URI")
 
 MONGO_DBNAME = os.getenv("MONGO_DBNAME")
 
-# Collection names
-
-MONGO_DBUSERS = os.getenv("MONGO_DBUSERS")
-MONGO_DBCONTACTLIST = os.getenv("MONGO_DBCONTACTLIST")
-MONGO_DBINVITES = os.getenv("MONGO_DBINVITES")
-MONGO_DBMESSAGES = os.getenv("MONGO_DBMESSAGES")
-
-
 client = MongoClient(MONGO_URI)
 db = client[MONGO_DBNAME]
 
@@ -43,8 +35,11 @@ def read_db(collection_name, query=None):
 
 
 def update_db(collection_name, query, update_data):
-
     try:
+
+        if "$set" not in update_data:
+            update_data = {"$set": update_data}
+
         result = db[collection_name].update_one(query, update_data)
         if result.modified_count > 0:
             print(
