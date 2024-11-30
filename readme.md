@@ -12,7 +12,7 @@ Add on as more options are done.
 - Delete invite after contact is added. (done)
 - Check if user already in contact list (message invite already send to {user}) (done)
 - go back to menu (done)
-- Make a contactlist with each party(pair) a unique secure ID
+- Make a contactlist with each party(pair) a unique secure ID (done sort offfff)
 - Secure messaging (ceasar_cipher) -
 
 - Deleting messages (everywhere) -
