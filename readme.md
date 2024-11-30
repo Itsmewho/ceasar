@@ -25,10 +25,10 @@ NOTE:
 
 #
 
-First: I thought that I knew what I was doing.
-Second: Chatgpt knew what it was doing.
-thirt: GPT and I knew what was going on.
-fourth: GPT lost it, I figured out what needed to be done,
+- First: I thought that I knew what I was doing.
+- Second: Chatgpt knew what it was doing.
+- thirt: GPT and I knew what was going on.
+- fourth: GPT lost it, I figured out what needed to be done,
 
 Now only god knows,... XD
 
