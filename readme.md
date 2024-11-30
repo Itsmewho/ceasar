@@ -18,3 +18,35 @@ Add on as more options are done.
 - Deleting messages (everywhere) -
 - Deleting users from contact list
 - Delete account. (And all corresponding data to the account in db-collections) -
+
+#
+
+NOTE:
+
+#
+
+First: I thought that I knew what I was doing.
+Second: Chatgpt knew what it was doing.
+thirt: GPT and I knew what was going on.
+fourth: GPT lost it, I figured out what needed to be done,
+
+Now only god knows,... XD
+
+#
+
+LEARNING POITNS :
+
+#
+
+- Get better at coding.
+- Work on functions
+- Get better with dicts,.
+- Use of folder system
+- Try to refine coding style,. . . .... . . .. . . . .......
+- CRUD-operations
+
+#
+
+Do an additional '3', of these size projects,..
+
+    Before adding API's and data collection.
